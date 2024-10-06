@@ -1,0 +1,20 @@
+# This is an example .sops.yaml that you would normally want to place in the
+# root of your pillars tree.  When running sops it will attempt to find
+# this file in all parents directories.  Thus using sops to create/edit a .sls
+# file within the pillar tree will load the settings from this file.
+creation_rules:
+    # only apply this rule to .sls files
+  - path_regex: \.sls$
+
+    # If a yaml key matches this regex, it will cause sops to encrypt the
+    # value
+    encrypted_regex: '(?i)^(key|secret|pass(word|wd)?|token)s?$'
+
+    # This is specific to my setup, which is using 'age' private/public keys for
+    # encryption/decryption with sops.  When encrypting, sops will make the data
+    # decryptable by the private keys associated with both of the 'age' public
+    # keys listed below (one being my salt master's and the other being mine).  
+    # You should obviously change this to your sops key setup.
+    age: >-
+      age188fc5w2cvu54ylpgzwhvu28na9rq64zrjlmfsutp3rnjmc8l4dps49nz7n,
+      age14rz6j7rxdktte6wt783phh5hwmle8a8fe9z2l7fu0sxngt3utqqqkhxrkf
